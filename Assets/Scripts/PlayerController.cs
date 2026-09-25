@@ -6,12 +6,15 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
+    private const float SCALE_REDUCTION = 0.003f;
+
     public float speed = 0;
     private Rigidbody rb;
     public GameObject winTextObject;
     private float movementX;
     private float movementY;
     private bool wasEaten = false;
+   
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,6 +28,13 @@ public class PlayerController : MonoBehaviour
 
         movementX = movementVector.x;
         movementY = movementVector.y;
+
+        var playerMass = gameObject.GetComponent<Rigidbody>().mass;
+        var playerScale = gameObject.transform.localScale;
+        playerMass -= SCALE_REDUCTION;
+        playerScale -= new Vector3(SCALE_REDUCTION, SCALE_REDUCTION, SCALE_REDUCTION);
+        gameObject.GetComponent<Rigidbody>().mass = playerMass;
+        gameObject.transform.localScale = playerScale;
     }
 
     void FixedUpdate()
