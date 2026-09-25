@@ -14,6 +14,7 @@ public class enemyMovement : MonoBehaviour
         generateNewDestination();
         var scale = Random.Range(0.1f, 1);
         gameObject.transform.localScale = new Vector3(scale, scale, scale);
+        gameObject.GetComponent<Rigidbody>().mass = scale;
     }
 
     // Update is called once per frame
