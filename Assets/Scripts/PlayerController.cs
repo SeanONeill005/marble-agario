@@ -34,16 +34,8 @@ public class PlayerController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(collision.gameObject);
-
             var enemyScale = collision.gameObject.transform.localScale;
             var playerScale = gameObject.transform.localScale;
-            if (playerScale.x > enemyScale.x)
-            {
-                playerScale += enemyScale;
-                gameObject.transform.localScale = playerScale;
-            }
-
             var EnemyMass = collision.gameObject.GetComponent<Rigidbody>().mass;
             var PlayerMass = gameObject.GetComponent<Rigidbody>().mass;
 
@@ -51,6 +43,17 @@ public class PlayerController : MonoBehaviour
             {
                 PlayerMass += EnemyMass;
                 gameObject.GetComponent<Rigidbody>().mass = PlayerMass;
+                playerScale += enemyScale;
+                gameObject.transform.localScale = playerScale;
+                Destroy(collision.gameObject);
+            }
+            else if (EnemyMass > PlayerMass)
+            {
+                EnemyMass += PlayerMass;
+                collision.gameObject.GetComponent<Rigidbody>().mass = EnemyMass;
+                enemyScale += playerScale;
+                collision.gameObject.transform.localScale = enemyScale;
+                Destroy(gameObject);
             }
         }
     }
